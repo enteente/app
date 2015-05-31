@@ -60,20 +60,21 @@
          </jar>
     </target>
 
-
+    
    <!-- RUN the newly packed algebra-jar file. -->
-   <target name="maina" depends="jar,clean">
+   <target name="main" depends="jar,clean">
       <java jar="${jar.dir}/algebra.jar testmat" fork="true"/>
    </target>
 
    <!-- RUN the rpn-jar file. -->
-   <target name="mainr" depends="jar,clean">
+   <!--   <target name="mainr" depends="jar,clean">
       <java jar="${jar.dir}/rpn.jar" fork="true"/>
    </target>
+-->
    <!-- RUN the bst-jar file. -->
-   <target name="mainb" depends="jar,clean">
+   <!--   <target name="mainb" depends="jar,clean">
       <java jar="${jar.dir}/bst.jar" fork="true"/>
    </target>
-
+-->
  
  </project>
