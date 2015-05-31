@@ -1,50 +1,54 @@
-<project name="java" default="compile" basedir=".">
-    
-    <property name="src.dir" location="src"/>
-    <property name="build.dir" location="build"/>
-    
-    <!-- TYPE - definition of the classpath -->    
-    <path id="project.classpath">
-        <pathelement path="${build.dir}"/>
-    </path>  
+<!-- Define a new ant project with default target 'main'. -->
+<project id="testalgebra" name="TestAlgebra" basedir="." default="main">
+    <!-- Define the basic project properties. -->
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+    <property name="main-class" value="TestAlgebra"/>
 
-    <target name="init">
-        <mkdir dir="${build.dir}"/>
+    <!-- Clean up the project by deleting the build dir. -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
     </target>
 
-    <target name="compile" depends="init" description="compile">
-        <javac srcdir="${src.dir}" destdir="${build.dir}"
-                includeantruntime="false" >
-            <classpath>
-                <pathelement location="lib/project.jar"/>
-                <pathelement location="lib/demo.jar"/>
-            </classpath>
-        </javac>
+    <!-- Compile the project into a newly created build dir. -->
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
     </target>
-    
-    <target name="run-algebra" depends="compile" description="Run the program">
-        <java classname="${TestAlgebra.class}" classpathref="run.classpath" />
-    </target>
-    <!--
-    <target name="jar" depends="compile" description="Create a jar file">
-        <jar destfile="${jar.file}">
-            <fileset dir="${build.dir}"/>
-                <manifest>
-                    <attribute name="Main-Class" value="${main.class}"/>
-                </manifest>
+
+    <!-- Pack a jar package from the compiled sources. -->
+    <target name="jar" depends="compile">
+        <!-- Create a new folder for the jar package. -->
+        <mkdir dir="${jar.dir}"/>
+
+        <!-- Pack the new jar archive. -->
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <!-- Define some meta data of the jar file. -->
+            <manifest>
+                <!-- Declare the main class to be executed. -->
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
         </jar>
     </target>
-    -->
-    <!--<target name="compile" depends="prepare"
-        description=" compile ./src and ./build" > 
-       <mkdir dir="./build"/>
-        <javac srcdir = "src"
-            destdir = "./build/classes"
-            debug = "true">
-            <classpath refid = "compile.classpath"/>
-        </javac>
+    
+    <target name="junit" depends="jar">
+        <junit printsummary="yes">
+            <batchtest fork="yes">
+                <fileset dir="${src.dir}" includes="*Test.java"/>
+            </batchtest>
+        </junit>
     </target>
--->
+
+    <!-- Run the newly packed jar file. -->
+    <target name="run" depends="jar">
+            <java jar="${jar.dir}/${ant.project.name}.jar testmat" fork="true" />
+    </target>
+
+    <!-- Define a composed target to clean and rebuild the project. -->
+    <target name="clean-build" depends="clean,jar"/>
+
+    <!-- Define a composed main target. -->
+    <target name="main" depends="clean,junit"/>
 </project>
-
-
