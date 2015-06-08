@@ -12,9 +12,7 @@
     <!-- CLEAN all class-files -->
     <target name="clean" depends="clean-src">
        <!-- delete all class files -->
-       <delete>
-          <dirset dir="${build.dir}"/>
-       </delete>   
+       <delete dir="${build.dir}"/> 
     </target> 
 
     <!-- CLEAN alle temporary and trash files in src -->
@@ -25,7 +23,6 @@
        </delete>
     </target>
           
-
     <!-- COMPILE the project into a newly created build dir. -->
     <target name="compile" depends="clean">
         <mkdir dir="${classes.dir}"/>
@@ -43,38 +40,43 @@
             <!-- Define some meta data of the jar file. -->
             <manifest>
                 <!-- Declare the main class to be executed. -->
-                <attribute name="main-algebra" value="${main-class}"/>
-            </manifest>
+                <attribute name="Main-Class" value="ente.exercise.run.TestAlgebra"/>
+           </manifest>
          </jar>
+
          <!-- Pack jar archive: rpn. -->
          <jar destfile="${jar.dir}/rpn.jar" basedir="${classes.dir}">
             <manifest>
-               <attribute name="main-rpn" value="${main-class}"/>
+               <attribute name="Main-Class" value="ente.exercise.run.RPN"/>
             </manifest>
          </jar>
+
          <!-- Pack jar archive: bst. -->
          <jar destfile="${jar.dir}/bst.jar" basedir="${classes.dir}">
             <manifest>
-               <attribute name="main-bst" value="${main-class}"/>
+               <attribute name="Main-Class" value="ente.exercise.run.TestBST"/>
             </manifest>
          </jar>
+
     </target>
 
-    
+   <!-- RUN all jar-files -->
+   <target name="main" depends="jar,compile"/>
+
    <!-- RUN the newly packed algebra-jar file. -->
-   <target name="main" depends="jar,clean">
-      <java jar="${jar.dir}/algebra.jar testmat" fork="true"/>
+   <target name="maina" depends="jar,clean">
+      <java jar="${jar.dir}/algebra.jar" fork="true"/>
    </target>
 
    <!-- RUN the rpn-jar file. -->
-   <!--   <target name="mainr" depends="jar,clean">
+   <target name="mainr" depends="jar,clean">
       <java jar="${jar.dir}/rpn.jar" fork="true"/>
    </target>
--->
+
    <!-- RUN the bst-jar file. -->
-   <!--   <target name="mainb" depends="jar,clean">
+   <target name="mainb" depends="jar,clean">
       <java jar="${jar.dir}/bst.jar" fork="true"/>
    </target>
--->
+
  
  </project>

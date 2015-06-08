@@ -113,7 +113,7 @@ public class Rational{
      *               1 if this number is higher than param
      *      @throws IllegalArgumentException if param o is not instance of Rational 
      */
-    public int compareTo(Object o){
+    public int compare(Object o){
         if(!(o instanceof Rational))
             throw new IllegalArgumentException("data is of wrong type in method \"compareTo\"");
         /*through difference of numerator*/

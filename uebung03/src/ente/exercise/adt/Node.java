@@ -55,7 +55,8 @@ public class Node<E extends Comparable<E>> implements Comparable<Node<E>>{
    }
 
    @Override
-   public int compareTo(Node<E> n){
+   public int compareTo(Node<E> n) throws NullPointerException{
+       //DEBUG System.out.println("tries comparing");
       return this.getData().compareTo(n.getData());
    }
 
@@ -74,4 +75,8 @@ public class Node<E extends Comparable<E>> implements Comparable<Node<E>>{
       return true;
    }
 
+    @Override
+    public String toString(){
+        return this.getData().toString();
+    }
 }

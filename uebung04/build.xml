@@ -1,0 +1,99 @@
+<!-- Define a new ant project with default target 'main'. -->
+<project name="uebung03" basedir="." default="main">
+    <!-- DEFINE the basic project properties. -->
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+    <property name="main-algebra" value="TestAlegbra"/>
+    <property name="main-rpn" value="RPN"/>
+    <property name="main-bst" value="TestBST"/>
+    <property name="main-rrbt" value="RationalRBT"/>
+    <property name="main-irbt" value="IntegerRBT"/>
+
+    <!-- CLEAN all class-files -->
+    <target name="clean" depends="clean-src">
+       <!-- delete all class files -->
+       <delete dir="${build.dir}"/> 
+    </target> 
+
+    <!-- CLEAN alle temporary and trash files in src -->
+    <target name="clean-src">
+       <delete>
+          <fileset dir="." includes="**/*~"/>
+          <fileset dir="${src.dir}" includes="**/*class" />
+       </delete>
+    </target>
+          
+    <!-- COMPILE the project into a newly created build dir. -->
+    <target name="compile" depends="clean">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
+            <compilerarg value="-Xlint"/>
+        </javac>
+    </target>
+
+    <!-- Pack a JAR package from the compiled sources. -->
+    <!-- for each main-class a different jar -->
+    <target name="jar" depends="compile">
+        <!-- Create a new folder for the jar package. -->
+        <mkdir dir="${jar.dir}"/>
+
+        <!-- Pack jar archive: algebra. -->
+        <jar destfile="${jar.dir}/algebra.jar" basedir="${classes.dir}">
+            <!-- Define some meta data of the jar file. -->
+            <manifest>
+                <!-- Declare the main class to be executed. -->
+                <attribute name="Main-Class" value="ente.exercise.run.TestAlgebra"/>
+           </manifest>
+         </jar>
+
+         <!-- Pack jar archive: rpn. -->
+         <jar destfile="${jar.dir}/rpn.jar" basedir="${classes.dir}">
+            <manifest>
+               <attribute name="Main-Class" value="ente.exercise.run.RPN"/>
+            </manifest>
+         </jar>
+
+         <!-- Pack jar archive: bst. -->
+         <jar destfile="${jar.dir}/bst.jar" basedir="${classes.dir}">
+            <manifest>
+               <attribute name="Main-Class" value="ente.exercise.run.TestBST"/>
+            </manifest>
+         </jar>
+    
+         <!-- Pack jar archive: bst. -->
+         <jar destfile="${jar.dir}/rationalrbt.jar" basedir="${classes.dir}">
+            <manifest>
+               <attribute name="Main-Class" value="ente.exercise.run.RationalRBT"/>
+            </manifest>
+         </jar>
+    
+         <!-- Pack jar archive: bst. -->
+         <jar destfile="${jar.dir}/integerrbt.jar" basedir="${classes.dir}">
+            <manifest>
+               <attribute name="Main-Class" value="ente.exercise.run.IntegerRBT"/>
+            </manifest>
+         </jar>
+    </target>
+
+   <!-- RUN all jar-files -->
+   <target name="main" depends="jar,compile"/>
+
+   <!-- RUN the newly packed algebra-jar file. -->
+   <target name="maina" depends="jar,clean">
+      <java jar="${jar.dir}/algebra.jar" fork="true"/>
+   </target>
+
+   <!-- RUN the rpn-jar file. -->
+   <target name="mainr" depends="jar,clean">
+      <java jar="${jar.dir}/rpn.jar" fork="true"/>
+   </target>
+
+   <!-- RUN the bst-jar file. -->
+   <target name="mainb" depends="jar,clean">
+      <java jar="${jar.dir}/bst.jar" fork="true"/>
+   </target>
+
+ 
+ </project>

@@ -28,6 +28,14 @@ public class CompRational extends NormRational implements Comparable<CompRationa
      */
     @Override
     public int compareTo(CompRational c){
-       return this.compare((Rational) c);
+        if(this.equals(c)){
+            return 0;
+        }
+        else if(this.sub(c).getNum() > 0){
+            return 1;
+        }
+        else{
+            return -1;
+        }
     }
 }
